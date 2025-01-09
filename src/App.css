@@ -1,42 +1,178 @@
-#root {
-  max-width: 1280px;
+/* Reset y box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos globales */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+/* Estilos del contenedor principal de landing */
+.landing-container {
+  text-align: center;
+  margin-top: 60px; /* Espacio debajo del navbar */
+}
+
+/* Estilos del navbar */
+nav {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.6); /* Navbar transparente */
+  padding: 1rem 0;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  z-index: 1000;
+}
+
+/* Estilos de la lista dentro del navbar */
+nav ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+}
+
+nav ul li {
+  margin: 0 20px;
+}
+
+/* Estilos de los enlaces en el navbar */
+nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+/* Efecto hover en los enlaces del navbar */
+nav a:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Fondo suave al pasar el ratón */
+  text-decoration: underline;
+}
+
+/* Estilos para el contenedor de signup */
+.signup-container {
+  width: 100%;
+  max-width: 500px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.signup-container h1 {
   text-align: center;
+  margin-bottom: 1rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Estilos para los grupos de formulario */
+.form-group {
+  margin-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Estilos de los campos de entrada en el formulario */
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
-.card {
-  padding: 2em;
+/* Estilos del contenedor de los botones */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
 }
 
-.read-the-docs {
-  color: #888;
+/* Estilos de los botones del formulario */
+.form-actions button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
+/* Estilos para el botón deshabilitado */
+.form-actions button:disabled {
+  background-color: #ccc;
+}
+
+/* Efecto hover en los botones */
+.form-actions button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para los mensajes de error */
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.main-style {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.main-style a {
+  color: black;
+  text-decoration: none;
+}
+
+.card-style {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
+  gap: 1rem;
+}
+
+.card-name {
+  margin: 0 0 10px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.index-number {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: black;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+

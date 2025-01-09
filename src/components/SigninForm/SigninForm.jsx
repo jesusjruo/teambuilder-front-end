@@ -4,7 +4,7 @@ import * as authService from '../../services/authService';
 
 const SigninForm = (props) => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState(['']);
+  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -32,36 +32,36 @@ const SigninForm = (props) => {
   };
 
   return (
-    <main>
+    <main className="signup-container">
       <h1>Log In</h1>
-      <p>{message}</p>
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Username:</label>
+      {message && <p className="error-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="signin-form">
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
-            autoComplete="off"
             id="username"
             value={formData.username}
             name="username"
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
-            autoComplete="off"
             id="password"
             value={formData.password}
             name="password"
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <button>Log In</button>
+        <div className="form-actions">
+          <button type="submit">Log In</button>
           <Link to="/">
-            <button>Cancel</button>
+            <button type="button">Cancel</button>
           </Link>
         </div>
       </form>

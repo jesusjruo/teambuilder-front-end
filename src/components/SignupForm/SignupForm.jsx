@@ -4,7 +4,7 @@ import * as authService from '../../services/authService';
 
 const SignupForm = (props) => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState(['']);
+  const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -37,21 +37,22 @@ const SignupForm = (props) => {
   };
 
   return (
-    <main>
+    <main className="signup-container">
       <h1>Sign Up</h1>
-      <p>{message}</p>
-      <form onSubmit={handleSubmit}>
-        <div>
+      {message && <p className="error-message">{message}</p>}
+      <form onSubmit={handleSubmit} className="signup-form">
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
-            id="name"
+            id="username"
             value={username}
             name="username"
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -59,22 +60,24 @@ const SignupForm = (props) => {
             value={password}
             name="password"
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <label htmlFor="confirm">Confirm Password:</label>
+        <div className="form-group">
+          <label htmlFor="passwordConf">Confirm Password:</label>
           <input
             type="password"
-            id="confirm"
+            id="passwordConf"
             value={passwordConf}
             name="passwordConf"
             onChange={handleChange}
+            required
           />
         </div>
-        <div>
-          <button disabled={isFormInvalid()}>Sign Up</button>
+        <div className="form-actions">
+          <button type="submit" disabled={isFormInvalid()}>Sign Up</button>
           <Link to="/">
-            <button>Cancel</button>
+            <button type="button">Cancel</button>
           </Link>
         </div>
       </form>
