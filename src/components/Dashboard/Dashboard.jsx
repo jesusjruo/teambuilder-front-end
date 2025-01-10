@@ -1,14 +1,22 @@
-import { AuthedUserContext } from '../../App';
-import { useContext } from 'react';
-
 const Dashboard = ({}) => {
-  const user = useContext(AuthedUserContext);
   return (
     <main>
-      <h1>Welcome, {user.username}</h1>
+      <h1>Welcome</h1>
+      <br></br><br></br>
+      <h4>
+        Y'all know how this goes...
+      </h4>
+      <h3>
+        Select your party and roll the champions.
+      </h3>
       <p>
-        This is the dashboard page where you, and only you, can see a dashboard
-        of all of your things.
+        The rule is simple:
+      </p>
+      <h4>
+        Whatever champions you get you MUST play INCLUDING the assigned role.
+      </h4>
+      <p>
+        GL HF :)
       </p>
     </main>
   );

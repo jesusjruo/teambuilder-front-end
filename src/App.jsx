@@ -1,4 +1,4 @@
-import { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import Landing from "./components/Landing/Landing";
@@ -8,23 +8,24 @@ import SigninForm from "./components/SigninForm/SigninForm";
 import * as authService from "../src/services/authService";
 import TeamList from "./components/TeamList/TeamList";
 import * as teamService from './services/teamService';
-
+import TeamComp from './components/TeamComp/TeamComp';
 
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(authService.getUser());
   const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllTeams = async () => {
+      setLoading(true);
       const teamsData = await teamService.index();
-      console.log('Teams: ', teamsData);
       setTeams(teamsData);
+      setLoading(false);
     };
     if (user) fetchAllTeams();
   }, [user]);
-
 
   const handleSignout = () => {
     authService.signout();
@@ -37,22 +38,19 @@ const App = () => {
         <NavBar user={user} handleSignout={handleSignout} />
         <Routes>
           {user ? (
-            // Protected Routes:
             <>
               <Route path="/" element={<Dashboard user={user} />} />
               <Route 
                 path="/teams" 
-                element={
-                  <TeamList teams={teams}/>
-                } 
+                element={<TeamList teams={teams} setTeams={setTeams} loading={loading} />} 
               />
             </>
           ) : (
-            // Public Route:
             <Route path="/" element={<Landing />} />
           )}
           <Route path="/signup" element={<SignupForm setUser={setUser} />} />
           <Route path="/signin" element={<SigninForm setUser={setUser} />} />
+          <Route path="/team/:teamId" element={<TeamComp />} />
         </Routes>
       </AuthedUserContext.Provider>
     </>

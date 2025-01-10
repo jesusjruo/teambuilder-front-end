@@ -44,8 +44,9 @@ const signin = async (user) => {
     if (res.ok) {  // Check for successful response status
       if (json.access) {
         localStorage.setItem('token', json.access);
-        const user = JSON.parse(atob(json.access.split('.')[1]));
-        return user;
+        localStorage.setItem('username', user.username);
+        const logged_user = JSON.parse(atob(json.access.split('.')[1]));
+        return logged_user;
       }
     } else {
       // Handle specific Django error response for sign-in
@@ -59,6 +60,7 @@ const signin = async (user) => {
 
 const signout = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('username');
 };
 
 export { signup, signin, getUser, signout };
