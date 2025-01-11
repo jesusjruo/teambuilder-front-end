@@ -42,8 +42,7 @@ const create = async (team) => {
     });
     const json = await res.json();
 
-    if (res.ok) { 
-      console.log('response: ' , json);
+    if (res.ok) {
       if (json) {
         return json;
       }
@@ -58,14 +57,39 @@ const create = async (team) => {
 
 const remove = async (teamId) => {
   try {
-    const res = await fetch(`${BASE_URL}${teamId}/`, {
+    await fetch(`${BASE_URL}${teamId}/`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    return res.json();
+    return true;
   } catch (error) {
     console.log(error);
   }
 }
 
-export { index, show, create, remove };
+const update = async (teamId, team) => {
+  try {
+    const res = await fetch(`${BASE_URL}${teamId}/`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization' : 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify(team),
+    });
+    const json = await res.json();
+
+    if (res.ok) { 
+      if (json) {
+        return json;
+      }
+    } else {
+      throw new Error(json.detail || 'Signin failed');
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export { index, show, create, remove, update };

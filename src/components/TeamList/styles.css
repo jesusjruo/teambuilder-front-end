@@ -107,7 +107,7 @@
   
   .delete-button {
     position: absolute;
-    bottom: 10px;
+    top: 7px;
     right: 10px;
     background: none;
     border: none;
@@ -118,9 +118,28 @@
     transition: color 0.3s;
     background-color: transparent !important;
   }
-  
+
   .delete-button:hover {
     color: red;
+    background-color: transparent !important;
+  }
+
+  .edit-button {
+    position: absolute;
+    top: 10px;
+    right: 40px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    transition: color 0.3s;
+    background-color: transparent !important;
+  }
+  
+  .edit-button:hover {
+    color: #007bff;
     background-color: transparent !important;
   }
   

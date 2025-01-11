@@ -7,14 +7,25 @@ import "./styles.css";
 const TeamList = ({ teams, setTeams, loading }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     members_amount: 1,
     level: "",
   });
+  const [editingTeamId, setEditingTeamId] = useState(null);
 
   const toggleModal = () => {
     setModalOpen(!isModalOpen);
+    if (!isModalOpen) {
+      setIsEditing(false);
+      setEditingTeamId(null);
+      setFormData({
+        name: "",
+        members_amount: 1,
+        level: "",
+      });
+    }
   };
 
   const updateMessage = (msg) => {
@@ -29,29 +40,51 @@ const TeamList = ({ teams, setTeams, loading }) => {
   const handleDelete = async (teamId) => {
     try {
       await teamService.remove(teamId);
-      setTeams((prevTeams) => prevTeams.filter((team) => team.url.split("/").pop() !== teamId)); //REVISAR
+      setTeams((prevTeams) => {
+        const updatedTeams = prevTeams.filter((team) => {
+          const id = team.url.split("/").filter((part) => part).pop();
+          return id !== teamId;
+        });
+        return updatedTeams;
+      });
     } catch (err) {
       updateMessage("Failed to delete team.");
     }
   };
 
+  const handleEdit = (team) => {
+    setIsEditing(true);
+    setEditingTeamId(team.url.split("/").filter((part) => part).pop());
+    setFormData({
+      name: team.name,
+      members_amount: team.members_amount,
+      level: team.level,
+    });
+    setModalOpen(true);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newTeam = await teamService.create(formData);
-      if (newTeam) {
-        setFormData({
-          name: "",
-          members_amount: 1,
-          level: "",
-        });
-        setModalOpen(false);
+      if (isEditing) {
+        const updatedTeam = await teamService.update(editingTeamId, formData);
+        setTeams((prevTeams) =>
+          prevTeams.map((team) =>
+            team.url.split("/").filter((part) => part).pop() === editingTeamId
+              ? updatedTeam
+              : team
+          )
+        );
+      } else {
+        const newTeam = await teamService.create(formData);
         setTeams((prevTeams) => [...prevTeams, newTeam]);
       }
+      setModalOpen(false);
     } catch (err) {
       updateMessage(err.message);
     }
   };
+  
 
   if (loading) {
     return <Loader message="Preparing Team Data..." />;
@@ -63,6 +96,12 @@ const TeamList = ({ teams, setTeams, loading }) => {
         const team_id = team.url.split("/").filter((part) => part).pop();
         return (
           <div key={team_id} className="card-style">
+             <button 
+              className="edit-button" 
+              onClick={() => handleEdit(team)}
+            >
+                <span>Edit</span>
+            </button>
             <button 
               className="delete-button" 
               onClick={() => handleDelete(team_id)}
@@ -71,7 +110,6 @@ const TeamList = ({ teams, setTeams, loading }) => {
                     delete
                 </span>
             </button>
-            <div className="index-number">{index + 1}</div>
             <Link to={`/team/${team_id}`}>
               <h2 className="card-name">{team.name}</h2>
               <p>
@@ -81,7 +119,7 @@ const TeamList = ({ teams, setTeams, loading }) => {
                 <strong>Party Size:</strong> {team.members_amount}
               </p>
               <p>
-                <strong>Level:</strong> {team.level}
+                <strong>Party Members:</strong> {team.level}
               </p>
             </Link>
           </div>
@@ -90,21 +128,15 @@ const TeamList = ({ teams, setTeams, loading }) => {
       <button className="floating-button" onClick={toggleModal}>
         +
       </button>
+
       {isModalOpen && (
         <div className="modal-overlay" onClick={toggleModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             {message && <p className="error-message">{message}</p>}
-            <h1>New Party</h1>
+            <h1>{isEditing ? "Edit Party" : "New Party"}</h1>
+            <br></br>
+            <br></br>
             <form onSubmit={handleSubmit} className="signin-form">
-              <div className="form-group">
-                <label htmlFor="username">Leader</label>
-                <input
-                  type="text"
-                  id="username"
-                  value={localStorage.getItem("username")}
-                  disabled
-                />
-              </div>
               <div className="form-group">
                 <label htmlFor="name">Name</label>
                 <input
@@ -172,7 +204,9 @@ const TeamList = ({ teams, setTeams, loading }) => {
                 />
               </div>
               <div className="form-actions create-button">
-                <button type="submit">Create Party</button>
+                <button type="submit">
+                  {isEditing ? "Update Party" : "Create Party"}
+                </button>
               </div>
             </form>
           </div>
